@@ -19,7 +19,6 @@ RUN \
     git \
     zsh \
     tmux \
-    stterm \
     curl \
     unzip \
     p7zip-full \
