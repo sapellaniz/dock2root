@@ -123,7 +123,7 @@ WORKDIR /temp
 # Download wordlist
 RUN \
     git clone --depth 1 https://github.com/danielmiessler/SecLists.git && \
-    curl -L -o rockyou.txt https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt && \
+    curl -L -o rockyou.txt https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt
 
 # WORDLIST
 FROM builder2 as builder3
@@ -138,7 +138,7 @@ WORKDIR /temp
 RUN \
     git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git sqlmap && \
 # Download XSStrike
-    git clone --depth 1 https://github.com/s0md3v/XSStrike.git && \
+    git clone --depth 1 https://github.com/s0md3v/XSStrike.git
 
 
 # CRACKING
