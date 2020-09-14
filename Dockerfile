@@ -121,7 +121,7 @@ RUN \
 RUN \
     # Install searchsploit
     git clone --depth 1 https://github.com/offensive-security/exploitdb.git /opt/exploitdb && \
-    sed 's|path_array+=(.*)|path_array+=("/opt/exploitdb")|g' /opt/exploitdb/.searchsploit_rc > ~/.searchsploit_rc && \
+    sed 's|path_array+=(.*)|path_array+=("/opt/exploitdb")|g' /opt/exploitdb/.searchsploit_rc > ~/.searchsploit_rc
     # Install findsploit
 	# https://github.com/1N3/Findsploit
 
