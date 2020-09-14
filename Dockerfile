@@ -78,7 +78,8 @@ RUN \
     # Download sqlmap
 	git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git sqlmap && \
     # Download XSStrike
-	git clone --depth 1 https://github.com/s0md3v/XSStrike.git
+	git clone --depth 1 https://github.com/s0md3v/XSStrike.git && \
+	chmod +x XSStrike/xsstrike.py
 
 # CRACKING
 RUN mkdir /tools/cracking
@@ -110,6 +111,7 @@ RUN \
 	wget -q https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/raw/master/winPEAS/winPEASexe/winPEAS/bin/Obfuscated%20Releases/winPEASx86.exe && \
     # Install smbmap
 	git clone --depth 1 https://github.com/ShawnDEvans/smbmap.git && \
+	pip3 install termcolor && \
     # Download pspy
 	wget -q https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy32 && \
 	wget -q https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64 && \
@@ -120,7 +122,6 @@ RUN \
     # Install searchsploit
     git clone --depth 1 https://github.com/offensive-security/exploitdb.git /opt/exploitdb && \
     sed 's|path_array+=(.*)|path_array+=("/opt/exploitdb")|g' /opt/exploitdb/.searchsploit_rc > ~/.searchsploit_rc && \
-    ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit
     # Install findsploit
 	# https://github.com/1N3/Findsploit
 
@@ -130,14 +131,25 @@ WORKDIR /tools/windows
 RUN \
     # Download crackmapexec
 	git clone --recursive https://github.com/byt3bl33d3r/CrackMapExec && \
+    # Install impacket
+	git clone https://github.com/SecureAuthCorp/impacket.git
+WORKDIR /tools/windows/impacket
+RUN pip install . 
+WORKDIR /tools/windows
     # Download powersploit
 	git clone --depth 1 https://github.com/PowerShellMafia/PowerSploit.git && \
-    # Download Pass-the-Hash
-	git clone --depth 1 https://github.com/byt3bl33d3r/pth-toolkit.git && \
     # Download Mimikatz
 	wget --quiet https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20200816/mimikatz_trunk.zip -O mimikatz.zip && \
 	unzip mimikatz.zip -d mimikatz && \
 	rm mimikatz.zip
+
+# SIMLINKS
+RUN \
+	ln -sf /tools/web/sqlmap/sqlmap.py /usr/local/bin/sqlmap && \
+	ln -sf /tools/web/XSStrike/xsstrike.py /usr/local/bin/xsstrike && \
+	ln -sf /tools/cracking/john/run/john /usr/local/bin/john && \
+	ln -sf /tools/enum/smbmap/smbmap.py /usr/local/bin/smbmap && \
+	ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit
 
 # SERVICES
 RUN \
