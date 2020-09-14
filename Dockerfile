@@ -1,5 +1,8 @@
 FROM ubuntu as baseline
 
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
+    
 # Install packages
 RUN \
     apt-get update && \
