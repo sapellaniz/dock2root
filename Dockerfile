@@ -2,7 +2,7 @@ FROM ubuntu as baseline
 
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
-    
+
 # Install packages
 RUN \
     apt-get update && \
@@ -18,6 +18,7 @@ RUN \
     iputils-ping \
     git \
     zsh \
+    zsh-syntax-highlighting \
     tmux \
     curl \
     unzip \
@@ -25,6 +26,7 @@ RUN \
     locate \
     tree \
     openvpn \
+    openssh-server \
     vim \
     wget \
     ftp \
@@ -83,9 +85,11 @@ FROM baseline as builder
 # SERVICES
 
 # Squid configuration
-RUN
+RUN \
     echo "http_access allow all" >> /etc/squid/squid.conf && \
-    sed -i 's/http_access deny all/#http_access deny all/g' /etc/squid/squid.conf
+    sed -i 's/http_access deny all/#http_access deny all/g' /etc/squid/squid.conf && \
+    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
+    echo "PermitEmptyPasswords yes" >> /etc/sshd_config
 # OS TOOLS
 
 # Install python dependencies
@@ -101,8 +105,8 @@ RUN \
 WORKDIR /tmp
 RUN \
     wget -q https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -O go.tar.gz && \
-    tar -C /usr/local -xzf go.tar.gz 
-    
+    tar -C /usr/local -xzf go.tar.gz
+
 ENV GOROOT "/usr/local/go"
 ENV GOPATH "/root/go"
 ENV PATH "$PATH:$GOPATH/bin:$GOROOT/bin"
@@ -184,8 +188,7 @@ RUN \
     chmod +x *
 
 # EXPLOITS
-FROM builder7 as builder8
-COPY --from=exploits /temp/ /tools/exploits/
+FROM builder3 as builder4
 WORKDIR /tools/exploits
 
 # Install searchsploit
@@ -217,7 +220,7 @@ RUN \
     rm mimikatz.zip
 
 # WINDOWS
-FROM builder8 as builder9
+FROM builder4 as builder5
 RUN mkdir -p /tools/windows
 COPY --from=windows /temp/ /tools/windows/
 
@@ -225,11 +228,14 @@ COPY --from=windows /temp/ /tools/windows/
 # OS TUNNING
 
 COPY zshrc /root/.zshrc
-COPY tmux.conf /root/.tmuz.conf
+COPY tmux.conf /root/.tmux.conf
 
 # Create or update a database used by locate
 RUN \
-    updatedb
+    updatedb && \
+# Delete root passwd, remember set one!
+    passwd -d root
 
 # Change workdir
-WORKDIR /
+WORKDIR /root
+ENTRYPOINT service ssh start && tmux new -s HTB
