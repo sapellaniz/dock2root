@@ -155,7 +155,7 @@ RUN \
 RUN \
     # Squid
         echo "http_access allow all" >> /etc/squid/squid.conf && \
-        sed -i 's/http_access deny all/#http_access deny all/g' /etc/squid/squid.conf && \
+        sed -i 's/http_access deny all/#http_access deny all/g' /etc/squid/squid.conf
 
 # OS TUNNING
 COPY zshrc /root/.zshrc
