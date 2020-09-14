@@ -7,7 +7,7 @@ Basado en el proyecto [Offensive Docker](https://github.com/aaaguirrep/offensive
 ```
 git clone https://gitlab.com/sapellaniz/dock2root.git
 cd dock2root
-docker build -t dock2root .
+sudo docker build -t dock2root .
 ```
 
 ## Run:
