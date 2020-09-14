@@ -136,6 +136,7 @@ RUN \
 WORKDIR /tools/windows/impacket
 RUN pip install . 
 WORKDIR /tools/windows
+RUN \
     # Download powersploit
 	git clone --depth 1 https://github.com/PowerShellMafia/PowerSploit.git && \
     # Download Mimikatz
