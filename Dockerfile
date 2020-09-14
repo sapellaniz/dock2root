@@ -226,7 +226,8 @@ COPY --from=windows /temp/ /tools/windows/
 
 # OS TUNNING
 
-# COPIAR ZSHRC Y TMUX.CONF
+COPY zshrc /root/.zshrc
+COPY tmux.conf /root/.tmuz.conf
 
 # Create or update a database used by locate
 RUN \
