@@ -1,6 +1,6 @@
 # Enable colors and change prompt
 autoload -U colors && colors
-PS1='%B%F{red}[%f%(?.%F{green}.%F{red})%?%f%F{red}][%f%F{yellow}%n%f%F{green}@%f%F{blue}%m%f %F{magenta}%~%f%F{red}]%f$%b'
+PS1='%B%F{red}[%f%(?.%F{green}.%F{red})%?%f%F{red}][%f%F{yellow}%n%f%F{green}@%f%F{blue}%m%f %F{magenta}%~%f%F{red}]%f#%b'
 
 # History in cache directory:
 HISTSIZE=1000
