@@ -12,6 +12,7 @@ docker build -t dock2root .
 
 ## Run:
 ```
- docker run -h Dock2rooT -v /pc/path:/docker/path --cap-add=NET_ADMIN --device=/dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 -name d2r dock2root /bin/zsh
+ docker run -d -it -h Dock2rooT -name d2r -v /pc/path:/docker/path \
+ --cap-add=NET_ADMIN --device=/dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 dock2root
  ssh root@172.17.0.2 -t tmux a
 ```
