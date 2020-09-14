@@ -101,11 +101,8 @@ RUN \
 WORKDIR /tmp
 RUN \
     wget -q https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -O go.tar.gz && \
-    tar -C /usr/local -xzf go.tar.gz && \
-# Install aws-cli
-    curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip && \
-    unzip awscliv2.zip && \
-    ./aws/install && \
+    tar -C /usr/local -xzf go.tar.gz 
+    
 ENV GOROOT "/usr/local/go"
 ENV GOPATH "/root/go"
 ENV PATH "$PATH:$GOPATH/bin:$GOROOT/bin"
