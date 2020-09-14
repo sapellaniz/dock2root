@@ -85,7 +85,7 @@ FROM baseline as builder
 # Squid configuration
 RUN
     echo "http_access allow all" >> /etc/squid/squid.conf && \
-    sed -i 's/http_access deny all/#http_access deny all/g' /etc/squid/squid.conf && \
+    sed -i 's/http_access deny all/#http_access deny all/g' /etc/squid/squid.conf
 # OS TOOLS
 
 # Install python dependencies
