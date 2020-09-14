@@ -19,6 +19,28 @@ bindkey '^[[1~' beginning-of-line
 bindkey '^[[4~' end-of-line
 bindkey '^[[3~' delete-char
 
+
+# Functions
+function xallPorts(){
+    nmap -Pn -p- --open -T5 -v -n $1 -oG allPorts
+}
+function xtop5000Ports(){
+    nmap -Pn --top-ports 5000 --open -T5 -v -n $1 -oG top5000
+}
+function xtargeted(){
+    nmap -Pn -sC -sV -p $2 $1 -oN targeted
+}
+function extractPorts(){
+	ports="$(cat $1 | grep -oP '\d{1,5}/open' | awk '{print $1}' FS='/' | xargs | tr ' ' ',')"
+	ip_address="$(cat $1 | grep -oP '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}' | sort -u | head -n 1)"
+	echo -e "\n[*] Extracting information...\n" > extractPorts.tmp
+	echo -e "\t[*] IP Address: $ip_address"  >> extractPorts.tmp
+	echo -e "\t[*] Open ports: $ports\n"  >> extractPorts.tmp
+	echo $ports | tr -d '\n' | xclip -sel clip
+	echo -e "[*] Ports copied to clipboard\n"  >> extractPorts.tmp
+	cat extractPorts.tmp; rm extractPorts.tmp
+}
+
 # Load aliases and shortcuts.
 alias cp='cp -vi'
 alias mv='mv -vi'
