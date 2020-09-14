@@ -12,5 +12,5 @@ docker build -t dock2root .
 
 ## Run:
 ```
- docker run --rm -it -p 3128:3128 -v /pc/path:/docker/path --cap-add=NET_ADMIN --device=/dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 -name d2r dock2root /bin/zsh
+ docker run --rm -it -h Dock2rooT -p 3128:3128 -v /pc/path:/docker/path --cap-add=NET_ADMIN --device=/dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 -name d2r dock2root /bin/zsh
 ```
