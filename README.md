@@ -22,7 +22,7 @@ Al lanzar el contenedor levanta un proxy para poder acceder a los servicios web 
 
 **Burp Suite:**
 
-Se puede usar Burp Suite facilmente, solo tenemos que configurar en la herramienta (ultima versión 2020.9.1): "User options"->"Connections"->"Upstream Proxy Servers"->"Add" y se añade el proxy del contenedor (172.17.0.2:3128).
+Se puede usar Burp Suite facilmente, solo tenemos que configurar en la herramienta (ultima versión 2020.9.1): "User options"->"Connections"->"Upstream Proxy Servers"->"Add" y se añade el proxy del contenedor (172.17.0.2:3128) para cualquier destino "*".  Como siempre, hay que configurar el navegador para que use Burp. [Upstream proxy](https://portswigger.net/support/burp-suite-upstream-proxy-servers)
 
 **Lanza y juega**
 
