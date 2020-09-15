@@ -16,9 +16,17 @@ sudo docker run --rm -it -h Dock2rooT -v /pc/path:/container/path --cap-add=NET_
 ```
 
 ## How-To:
+**Servicios web de las máquinas:**
+
 Al lanzar el contenedor levanta un proxy para poder acceder a los servicios web de las máquinas de HTB con solo configurar nuestro navegador para que use el proxy (172.17.0.2:3128).
 
-Si se lanza el contenedor bindeando un volumen que contenga el archivo de configuración de openVPN (docker run -v) el contenedor se conecta automáticamente a HTB para poder "lanzar y jugar".
+**Burp Suite:**
+
+Se puede usar Burp Suite facilmente, solo tenemos que configurar en la herramienta (ultima versión 2020.9.1): "User options"->"Connections"->"Upstream Proxy Servers"->"Add" y se añade el proxy del contenedor (172.17.0.2:3128).
+
+**Lanza y juega**
+
+Si se lanza el contenedor bindeando un volumen que contenga el archivo de configuración de openVPN (docker run -v) el contenedor se conecta automáticamente a HTB para poder "lanzar y jugar" sin tener que preocuparse de configurar nada.
 
 
 
