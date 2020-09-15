@@ -12,6 +12,9 @@ Si jugando desde una máquina virtual no tienes porque ser root, desde un conten
 ### Ligero:
 Todas las herramientas necesarias para poder jugar... y mas! Enmarcadas en una imágen de menos de 5GB que lanza el contenedor en menos de 1 segundo. Si quieres añadir alguna solo tienes que editar el dockerfile y reconstruir o ponerte en contacto conmigo, las sugerencias son bienvenidas :)
 
+### Usabilidad:
+Al lanzar el contenedor se crea una sesión de tmux en la que podrás crear paneles y ventanas para poder realizar varias tareas a la vez, los atajos del teclado se pueden ver en "~/.tmux.conf", también hay tres funciones en "~/.zshrc" para automatizar un el escaneo de puertos inicial y poder ir más rápido.
+
 ## 2- Instalar:
 **Desde gitlab**
 ```
