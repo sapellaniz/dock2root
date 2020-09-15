@@ -14,7 +14,7 @@ RUN \
 	git jq libcurl4-openssl-dev libssl-dev libwww-perl \
 	openjdk-8-jdk python python3 python3-pip vim \
     # System management
-	cifs-utils htop locate p7zip-full tree unzip \
+	cifs-utils htop locate p7zip-full tree unzip sudo \
     # Terminal & Shell
 	rlwrap tmux zsh zsh-syntax-highlighting \
     # Cracking & bruteforce
@@ -163,17 +163,24 @@ RUN \
         sed -i 's/http_access deny all/#http_access deny all/g' /etc/squid/squid.conf
 
 # OS TUNNING
-COPY zshrc /root/.zshrc
-COPY tmux.conf /root/.tmux.conf
+RUN useradd playerRed -G sudo -s /bin/zsh
+#COPY zshrc /root/.zshrc
+#COPY tmux.conf /root/.tmux.conf
+COPY zshrc /home/playerRed/.zshrc
+COPY tmux.conf /home/playerRed/.tmux.conf
+
 RUN \
     # Update locate db
 	updatedb && \
     # Change root's shell
-	usermod -s /bin/zsh root && \
+#	usermod -s /bin/zsh root && \
+	echo '%sudo ALL=(ALL) NOPASSWD: /usr/sbin/squid, /usr/sbin/openvpn, /usr/bin/updatedb, /usr/bin/locate' >> /etc/sudoers && \
     # start.sh
-	echo 'updatedb && openvpn $(locate .ovpn) >/dev/null & squid && tmux' > /tmp/.start.sh && \
-	chmod +x /tmp/.start.sh
+	echo 'sudo /usr/bin/updatedb && sudo /usr/sbin/openvpn $(sudo /usr/bin/locate .ovpn) >/dev/null & sudo /usr/sbin/squid && tmux' > /tmp/.start.sh && \
+	chmod o+x /tmp/.start.sh && \
+	chown playerRed /home/playerRed/.*
 
 # Change workdir
-WORKDIR /root
+USER playerRed
+WORKDIR /home/playerRed
 ENTRYPOINT /tmp/.start.sh
