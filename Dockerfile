@@ -150,7 +150,8 @@ RUN \
 	ln -sf /tools/web/XSStrike/xsstrike.py /usr/local/bin/xsstrike && \
 	ln -sf /tools/cracking/john/run/john /usr/local/bin/john && \
 	ln -sf /tools/enum/smbmap/smbmap.py /usr/local/bin/smbmap && \
-	ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit
+	ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit && \
+	ln -sf /tools/enum/enum4linux/enum4linux.pl /usr/local/bin/enum4linux
 
 # SERVICES
 RUN \
@@ -161,12 +162,15 @@ RUN \
 # OS TUNNING
 COPY zshrc /root/.zshrc
 COPY tmux.conf /root/.tmux.conf
+COPY start.sh /root/.start.sh
 RUN \
     # Update locate db
 	updatedb && \
     # Change root's shell
-	usermod -s /bin/zsh root
+	usermod -s /bin/zsh root && \
+    # Grant exec permission to .start.sh
+	chmod +x /root/.start.sh
 
 # Change workdir
 WORKDIR /root
-ENTRYPOINT squid
+ENTRYPOINT /root/.start.sh
