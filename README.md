@@ -32,7 +32,7 @@ sudo docker pull santatecla/dock2root:tagname
 ```
 sudo docker run --rm -it -h Dock2rooT -v /pc/path:/container/path --cap-add=NET_ADMIN --device=/dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 --name d2r dock2root /bin/zsh
 ```
-**Tambien se puede crear una función para lanzarlo más comodamente:**
+**También se puede crear una función para lanzarlo más comodamente:**
 ```
 function hackTheBox(){
         sudo sysctl -w net.ipv4.ip_forward=1 &>/dev/null && echo "Packet forwarding enabled"
