@@ -23,7 +23,7 @@ sudo docker build -t dock2root .
 ```
 **Desde dockerhub**
 ```
-
+sudo docker pull santatecla/dock2root:tagname
 ```
 
 ## 3- Lanzar:
