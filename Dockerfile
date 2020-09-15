@@ -35,17 +35,17 @@ RUN \
 	gem install gpp-decrypt addressable wpscan \
     # Install evil-winrm
 	evil-winrm && \
-	apt-get update
-
-# Installing python-pip
-RUN curl -O https://raw.githubusercontent.com/pypa/get-pip/master/get-pip.py &&  \
+	apt-get update && \
+    # Installing python-pip
+	curl -O https://raw.githubusercontent.com/pypa/get-pip/master/get-pip.py &&  \
 	python get-pip.py  && \
 	echo "PATH=$HOME/.local/bin/:$PATH" >> ~/.bashrc && \
 	rm get-pip.py
 
 # Install python dependencies
-COPY requirements_pip3.txt /tmp
-COPY requirements_pip.txt /tmp
+ADD requirements/ /tmp
+#COPY requirements_pip3.txt /tmp
+#COPY requirements_pip.txt /tmp
 RUN \
 	pip3 install -r /tmp/requirements_pip3.txt && \
 	pip install -r /tmp/requirements_pip.txt
@@ -124,8 +124,6 @@ RUN \
     # Install searchsploit
     git clone --depth 1 https://github.com/offensive-security/exploitdb.git /opt/exploitdb && \
     sed 's|path_array+=(.*)|path_array+=("/opt/exploitdb")|g' /opt/exploitdb/.searchsploit_rc > ~/.searchsploit_rc
-    # Install findsploit
-	# https://github.com/1N3/Findsploit
 
 # WINDOWS
 RUN mkdir /tools/windows
@@ -164,23 +162,18 @@ RUN \
 
 # OS TUNNING
 RUN useradd playerRed -G sudo -s /bin/zsh
-#COPY zshrc /root/.zshrc
-#COPY tmux.conf /root/.tmux.conf
-COPY zshrc /home/playerRed/.zshrc
-COPY tmux.conf /home/playerRed/.tmux.conf
+ADD dotfiles/ /home/playerRed/
 
 RUN \
     # Update locate db
 	updatedb && \
-    # Change root's shell
-#	usermod -s /bin/zsh root && \
+    # Modify sudoers
 	echo '%sudo ALL=(ALL) NOPASSWD: /usr/sbin/squid, /usr/sbin/openvpn, /usr/bin/updatedb, /usr/bin/locate' >> /etc/sudoers && \
     # start.sh
-	echo 'sudo /usr/bin/updatedb && sudo /usr/sbin/openvpn $(sudo /usr/bin/locate .ovpn) >/dev/null & sudo /usr/sbin/squid && tmux' > /tmp/.start.sh && \
-	chmod o+x /tmp/.start.sh && \
+	chmod +x /home/playerRed/.start.sh && \
 	chown playerRed /home/playerRed/.*
 
 # Change workdir
 USER playerRed
 WORKDIR /home/playerRed
-ENTRYPOINT /tmp/.start.sh
+ENTRYPOINT /home/playerRed/.start.sh
