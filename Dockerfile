@@ -115,7 +115,9 @@ RUN \
     # Download pspy
 	wget -q https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy32 && \
 	wget -q https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64 && \
-	chmod +x pspy*
+	chmod +x pspy* && \
+    # HTBexplorer
+	git clone https://github.com/s4vitar/htbExplorer.git
 
 # Exploits
 RUN \
@@ -150,6 +152,7 @@ RUN \
 	ln -sf /tools/web/XSStrike/xsstrike.py /usr/local/bin/xsstrike && \
 	ln -sf /tools/cracking/john/run/john /usr/local/bin/john && \
 	ln -sf /tools/enum/smbmap/smbmap.py /usr/local/bin/smbmap && \
+	ln -sf /tools/enum/htbExplorer/htbExplorer /usr/local/bin/htbexplorer && \
 	ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit && \
 	ln -sf /tools/enum/enum4linux/enum4linux.pl /usr/local/bin/enum4linux
 
@@ -162,15 +165,15 @@ RUN \
 # OS TUNNING
 COPY zshrc /root/.zshrc
 COPY tmux.conf /root/.tmux.conf
-COPY start.sh /root/.start.sh
 RUN \
     # Update locate db
 	updatedb && \
     # Change root's shell
 	usermod -s /bin/zsh root && \
-    # Grant exec permission to .start.sh
-	chmod +x /root/.start.sh
+    # start.sh
+	echo 'updatedb && openvpn $(locate .ovpn) >/dev/null & squid && tmux' > /tmp/.start.sh && \
+	chmod +x /tmp/.start.sh
 
 # Change workdir
 WORKDIR /root
-ENTRYPOINT /root/.start.sh
+ENTRYPOINT /tmp/.start.sh
