@@ -1,7 +1,7 @@
 # Dock2rooT
 Contenedor diseñado para jugar a HackTheBox y otros CTFs.
 
-![demo](test.gif)
+![demo](demo.gif)
 
 ## 1- Características
 ### Lanza y juega:
