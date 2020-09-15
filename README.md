@@ -10,7 +10,7 @@ Si se lanza el contenedor bindeando un volumen que contenga el archivo de config
 Si jugando desde una máquina virtual no tienes porque ser root, desde un contenedor tampoco, al levantar el contenedor apareces como "playerRed", un usuario con los privilegios mínimos necesarios para poder jugar.
 
 ### Ligero:
-Todas las herramientas necesarias para poder jugar... y mas! Enmarcadas en una imágen de menos de 5GB que lanza el contenedor en menos de 1 segundo.
+Todas las herramientas necesarias para poder jugar... y mas! Enmarcadas en una imágen de menos de 5GB que lanza el contenedor en menos de 1 segundo. Si quieres añadir alguna solo tienes que editar el dockerfile y reconstruir o ponerte en contacto conmigo, las sugerencias son bienvenidas :)
 
 ## 2- Instalar:
 **Desde gitlab**
