@@ -31,10 +31,10 @@ sudo docker run --rm -it -h Dock2rooT -v /pc/path:/container/path --cap-add=NET_
 
 ## 4- FAQs:
 ### Servicios web de las máquinas:
-Al lanzar el contenedor levanta un proxy para poder acceder a los servicios web de las máquinas de HTB con solo configurar nuestro navegador para que use el proxy (172.17.0.2:3128).
+Al lanzar el contenedor se levanta un proxy para poder acceder a los servicios web de las máquinas de HTB con solo configurar el navegador para que use el proxy (172.17.0.2:3128).
 
 ### Burp Suite:
-Se puede usar Burp Suite facilmente, solo tenemos que configurar en la herramienta (ultima versión 2020.9.1): "User options"->"Connections"->"Upstream Proxy Servers"->"Add" y se añade el proxy del contenedor (172.17.0.2:3128) para cualquier destino "*".  Como siempre, hay que configurar el navegador para que use Burp. [Upstream proxy](https://portswigger.net/support/burp-suite-upstream-proxy-servers)
+Se puede usar Burp Suite facilmente, solo hay que configurar en la herramienta (ultima versión 2020.9.1): "User options"->"Connections"->"Upstream Proxy Servers"->"Add" y añadir el proxy del contenedor (172.17.0.2:3128) para cualquier destino "*".  Como siempre, hay que configurar el navegador para que use Burp. [Upstream proxy](https://portswigger.net/support/burp-suite-upstream-proxy-servers)
 
 ## 5- Seguridad
 La 5ª regla de HTB:
