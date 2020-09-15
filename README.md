@@ -1,5 +1,5 @@
 # Dock2rooT
-Contenedor diseñado para CTF del tipo "boot to root".
+Contenedor diseñado para jugar a HackTheBox y otros CTFs.
 
 ## 1- Características
 ### Lanza y juega:
