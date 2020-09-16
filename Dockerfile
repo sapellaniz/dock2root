@@ -40,28 +40,46 @@ RUN \
 	curl -O https://raw.githubusercontent.com/pypa/get-pip/master/get-pip.py &&  \
 	python get-pip.py  && \
 	echo "PATH=$HOME/.local/bin/:$PATH" >> ~/.bashrc && \
-	rm get-pip.py
-
-# Install python dependencies
-ADD requirements/ /tmp
-#COPY requirements_pip3.txt /tmp
-#COPY requirements_pip.txt /tmp
-RUN \
-	pip3 install -r /tmp/requirements_pip3.txt && \
-	pip install -r /tmp/requirements_pip.txt
+	rm get-pip.py && \
+# SERVICES
+    # Squid
+        echo "http_access allow all" >> /etc/squid/squid.conf && \
+        sed -i 's/http_access deny all/#http_access deny all/g' /etc/squid/squid.conf && \
+    # Update locate db
+        updatedb && \
+    # Modify sudoers
+        echo '%sudo ALL=(ALL) ALL' >> /etc/sudoers && \
+    # Config playerRed
+	useradd playerRed -G sudo -s /bin/zsh && \
+	passwd -d playerRed && \
+	mkdir /tools && \
+    # Remove apt cache
+	apt-get clean autoclean && \
+	apt-get autoremove --yes && \
+	rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 # Install go
 WORKDIR /tmp
 RUN \
-	wget -q https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -O go.tar.gz && \
-	tar -C /usr/local -xzf go.tar.gz
+        wget -q https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -O go.tar.gz && \
+        tar -C /usr/local -xzf go.tar.gz
 
 ENV GOROOT "/usr/local/go"
-ENV GOPATH "/root/go"
+ENV GOPATH "/home/playerRed/go"
 ENV PATH "$PATH:$GOPATH/bin:$GOROOT/bin"
 
+# Install python dependences & Config playerRed's home
+ADD requirements/ /home/playerRed
+#RUN chown -R playerRed:playerRed /home/playerRed /tools /tmp /usr/local
+RUN chown -R playerRed:playerRed /home/playerRed
+#USER playerRed
+RUN \
+        pip3 install -r /home/playerRed/requirements_pip3.txt && \
+        pip install -r /home/playerRed/requirements_pip.txt && \
+	rm /home/playerRed/requirements* && \
+	mkdir -p /tools/wordlist /tools/web /tools/cracking /tools/enum /tools/exploits /tools/windows
+
 # WORDLISTS
-RUN mkdir -p /tools/wordlist
 WORKDIR /tools/wordlist
 RUN \
     # Download SecLists
@@ -70,7 +88,6 @@ RUN \
         curl -L -o rockyou.txt https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt
 
 # RECON
-RUN mkdir /tools/web
 WORKDIR /tools/web
 RUN \
     # Install ffuf
@@ -82,7 +99,6 @@ RUN \
 	chmod +x XSStrike/xsstrike.py
 
 # CRACKING
-RUN mkdir /tools/cracking
 WORKDIR /tools/cracking
 
     # Install john the ripper
@@ -91,7 +107,6 @@ WORKDIR /tools/cracking/john/src
 RUN ./configure && make -s clean && make -sj4
 
 # ENUMERATION
-RUN mkdir /tools/enum
 WORKDIR /tools/enum
 
     # Download htbenum
@@ -111,7 +126,6 @@ RUN \
 	wget -q https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/raw/master/winPEAS/winPEASexe/winPEAS/bin/Obfuscated%20Releases/winPEASx86.exe && \
     # Install smbmap
 	git clone --depth 1 https://github.com/ShawnDEvans/smbmap.git && \
-	pip3 install termcolor && \
     # Download pspy
 	wget -q https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy32 && \
 	wget -q https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64 && \
@@ -122,17 +136,18 @@ RUN \
 # Exploits
 RUN \
     # Install searchsploit
-    git clone --depth 1 https://github.com/offensive-security/exploitdb.git /opt/exploitdb && \
-    sed 's|path_array+=(.*)|path_array+=("/opt/exploitdb")|g' /opt/exploitdb/.searchsploit_rc > ~/.searchsploit_rc
+    git clone --depth 1 https://github.com/offensive-security/exploitdb.git /tools/exploits/exploitdb && \
+    sed 's|path_array+=(.*)|path_array+=("/opt/exploitdb")|g' /tools/exploits/exploitdb/.searchsploit_rc > ~/.searchsploit_rc
 
 # WINDOWS
-RUN mkdir /tools/windows
 WORKDIR /tools/windows
 RUN \
-    # Download crackmapexec
+    # Install crackmapexec & impacket
 	git clone --recursive https://github.com/byt3bl33d3r/CrackMapExec && \
-    # Install impacket
 	git clone https://github.com/SecureAuthCorp/impacket.git
+WORKDIR /tools/windows/CrackMapExec
+RUN python3 setup.py install
+WORKDIR /tools/windows
 WORKDIR /tools/windows/impacket
 RUN pip install . 
 WORKDIR /tools/windows
@@ -151,29 +166,15 @@ RUN \
 	ln -sf /tools/cracking/john/run/john /usr/local/bin/john && \
 	ln -sf /tools/enum/smbmap/smbmap.py /usr/local/bin/smbmap && \
 	ln -sf /tools/enum/htbExplorer/htbExplorer /usr/local/bin/htbexplorer && \
-	ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit && \
+	ln -sf /tools/exploits/exploitdb/searchsploit /usr/local/bin/searchsploit && \
 	ln -sf /tools/enum/enum4linux/enum4linux.pl /usr/local/bin/enum4linux
 
-# SERVICES
-RUN \
-    # Squid
-        echo "http_access allow all" >> /etc/squid/squid.conf && \
-        sed -i 's/http_access deny all/#http_access deny all/g' /etc/squid/squid.conf
-
-# OS TUNNING
-RUN useradd playerRed -G sudo -s /bin/zsh
-ADD dotfiles/ /home/playerRed/
-
-RUN \
-    # Update locate db
-	updatedb && \
-    # Modify sudoers
-	echo '%sudo ALL=(ALL) NOPASSWD: /usr/sbin/squid, /usr/sbin/openvpn, /usr/bin/updatedb, /usr/bin/locate' >> /etc/sudoers && \
-    # start.sh
-	chmod +x /home/playerRed/.start.sh && \
-	chown playerRed /home/playerRed/.*
-
 # Change workdir
+ADD dotfiles/ /home/playerRed/
+RUN \
+	chown -R playerRed:playerRed /home/playerRed && \
+	chmod +x /home/playerRed/.start.sh
+	
 USER playerRed
 WORKDIR /home/playerRed
-ENTRYPOINT /home/playerRed/.start.sh
+ENTRYPOINT /bin/zsh /home/playerRed/.start.sh
