@@ -1,8 +1,6 @@
 # Dock2rooT
 Contenedor diseñado para jugar a HackTheBox y otros CTFs.
 
-![demo](demo.gif)
-
 ## 1- Características
 ### Lanza y juega:
 Si se lanza el contenedor bindeando un volumen que contenga el archivo de configuración de openVPN (docker run -v) el contenedor se conecta automáticamente a HTB para poder "lanzar y jugar" sin tener que preocuparse de configurar nada.
