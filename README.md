@@ -15,9 +15,9 @@ Todas las herramientas necesarias para poder jugar... y mas! Enmarcadas en una i
 Al lanzar el contenedor se crea una sesión de tmux en la que podrás crear paneles y ventanas para poder realizar varias tareas a la vez, los atajos del teclado se pueden ver en "~/.tmux.conf", también hay tres funciones en "~/.zshrc" para automatizar un el escaneo de puertos inicial y poder ir más rápido.
 
 ## 2- Instalar:
-**Desde gitlab**
+**Desde github**
 ```
-git clone https://gitlab.com/sapellaniz/dock2root.git
+git clone https://github.com/sapellaniz/dock2root.git
 cd dock2root
 sudo docker build -t dock2root .
 ```
@@ -28,24 +28,21 @@ sudo docker pull santatecla/dock2root:tagname
 
 ## 3- Lanzar:
 ```
-sudo docker run --rm -it -h Dock2rooT -v /pc/path:/container/path --cap-add=NET_ADMIN --device=/dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 --name d2r dock2root /bin/zsh
+sudo docker run --rm -it -h Dock2rooT -v /tmp/.X11-unix:/tmp/.X11-unix -v /pc/path:/container/path --cap-add=NET_ADMIN --device=/dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 --name d2r dock2root /bin/zsh
 ```
 **También se puede crear una función para lanzarlo más comodamente:**
 ```
 function hackTheBox(){
         sudo sysctl -w net.ipv4.ip_forward=1 &>/dev/null && echo "Packet forwarding enabled"
         systemctl is-active --quiet docker || sudo systemctl start docker
-        sudo docker run --rm -it -h Dock2rooT -v /pc/path:/home/playerRed/htb --cap-add=NET_ADMIN --device=/dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 --name d2r dock2root /bin/zsh && \
+        sudo docker run --rm -it -h Dock2rooT -v /tmp/.X11-unix:/tmp/.X11-unix -v /pc/path:/home/playerRed/htb --cap-add=NET_ADMIN --device=/dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 --name d2r dock2root /bin/zsh && \
         sudo sysctl -w net.ipv4.ip_forward=0 &>/dev/null && echo "Packet forwarding disabled"
 }
 ```
 
 ## 4- FAQs:
-### Servicios web de las máquinas:
-Al lanzar el contenedor se levanta un proxy para poder acceder a los servicios web de las máquinas de HTB con solo configurar el navegador para que use el proxy (172.17.0.2:3128).
-
-### Burp Suite:
-Se puede usar Burp Suite facilmente, solo hay que configurar en la herramienta (ultima versión 2020.9.1): "User options"->"Connections"->"Upstream Proxy Servers"->"Add" y añadir el proxy del contenedor (172.17.0.2:3128) para cualquier destino "*".  Como siempre, hay que configurar el navegador para que use Burp. [Upstream proxy](https://portswigger.net/support/burp-suite-upstream-proxy-servers)
+### Aplicaciones con GUI (firefox, burpsuite, wireshark...):
+Si se lanza el contenedor con la opción "-v /tmp/.X11-unix:/tmp/.X11-unix" se pueden ejecutar aplicaciones con GUI instaladas en el contenedor.
 
 ## 5- Seguridad
 La 5ª regla de HTB:

@@ -8,15 +8,17 @@ RUN \
 	apt-get update && \
 	apt-get install -y \
     # Networking utilities
-	dnsutils host iputils-ping net-tools squid tcpdump \
-	curl ftp netcat nikto nmap openvpn telnet wget \
+	dnsutils host iputils-ping net-tools tcpdump \
+	curl ftp netcat nmap openvpn telnet wget \
+    # Web
+	firefox nikto whatweb \
     # Development
-	git jq libcurl4-openssl-dev libssl-dev libwww-perl \
-	openjdk-8-jdk python python3 python3-pip vim \
+	git jq libcurl4-openssl-dev libssl-dev libwww-perl openjdk-8-jdk \
+	openjdk-11-jdk python python3 python3-pip python3-venv vim \
     # System management
 	cifs-utils htop locate p7zip-full tree unzip sudo \
     # Terminal & Shell
-	rlwrap tmux zsh zsh-syntax-highlighting \
+	rlwrap tmux zsh zsh-syntax-highlighting man-db \
     # Cracking & bruteforce
 	cewl crunch hydra hashcat \
     # patator dependencies
@@ -35,20 +37,12 @@ RUN \
 	gem install gpp-decrypt addressable wpscan \
     # Install evil-winrm
 	evil-winrm && \
-	apt-get update && \
     # Installing python-pip
 	curl -O https://raw.githubusercontent.com/pypa/get-pip/master/get-pip.py &&  \
 	python get-pip.py  && \
 	echo "PATH=$HOME/.local/bin/:$PATH" >> ~/.bashrc && \
 	rm get-pip.py && \
 # SERVICES
-    # Squid
-        echo "http_access allow all" >> /etc/squid/squid.conf && \
-        sed -i 's/http_access deny all/#http_access deny all/g' /etc/squid/squid.conf && \
-    # Update locate db
-        updatedb && \
-    # Modify sudoers
-        echo '%sudo ALL=(ALL) ALL' >> /etc/sudoers && \
     # Config playerRed
 	useradd playerRed -G sudo -s /bin/zsh && \
 	passwd -d playerRed && \
@@ -62,7 +56,8 @@ RUN \
 WORKDIR /tmp
 RUN \
         wget -q https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -O go.tar.gz && \
-        tar -C /usr/local -xzf go.tar.gz
+        tar -C /usr/local -xzf go.tar.gz && \
+	rm go.tar.gz
 
 ENV GOROOT "/usr/local/go"
 ENV GOPATH "/home/playerRed/go"
@@ -70,14 +65,13 @@ ENV PATH "$PATH:$GOPATH/bin:$GOROOT/bin"
 
 # Install python dependences & Config playerRed's home
 ADD requirements/ /home/playerRed
-#RUN chown -R playerRed:playerRed /home/playerRed /tools /tmp /usr/local
 RUN chown -R playerRed:playerRed /home/playerRed
-#USER playerRed
 RUN \
         pip3 install -r /home/playerRed/requirements_pip3.txt && \
         pip install -r /home/playerRed/requirements_pip.txt && \
 	rm /home/playerRed/requirements* && \
-	mkdir -p /tools/wordlist /tools/web /tools/cracking /tools/enum /tools/exploits /tools/windows
+	mkdir -p /tools/wordlist /tools/web /tools/cracking /tools/enum \
+		/tools/exploits /tools/windows /home/playerRed/htb
 
 # WORDLISTS
 WORKDIR /tools/wordlist
@@ -87,16 +81,23 @@ RUN \
     # Download Rockyou
         curl -L -o rockyou.txt https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt
 
-# RECON
+# WEB
 WORKDIR /tools/web
 RUN \
     # Install ffuf
 	go get github.com/ffuf/ffuf && \
+    # Install gobuster
+	go get github.com/OJ/gobuster && \
     # Download sqlmap
 	git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git sqlmap && \
     # Download XSStrike
 	git clone --depth 1 https://github.com/s0md3v/XSStrike.git && \
-	chmod +x XSStrike/xsstrike.py
+	chmod +x XSStrike/xsstrike.py && \
+    # Install Burp suite
+	wget -O ./burp.jar 'https://portswigger.net/DownloadUpdate.ashx?Product=Free' && \
+	chmod +x ./burp.jar && \
+	echo "#! /bin/zsh \njava -jar /tools/web/burp.jar > /dev/null 2>&1 & \n" > burpsuite && \
+	chmod +x burpsuite
 
 # CRACKING
 WORKDIR /tools/cracking
@@ -142,32 +143,32 @@ RUN \
 # WINDOWS
 WORKDIR /tools/windows
 RUN \
-    # Install crackmapexec & impacket
-	git clone --recursive https://github.com/byt3bl33d3r/CrackMapExec && \
-	git clone https://github.com/SecureAuthCorp/impacket.git
-WORKDIR /tools/windows/CrackMapExec
-RUN python3 setup.py install
-WORKDIR /tools/windows
-WORKDIR /tools/windows/impacket
-RUN pip install . 
-WORKDIR /tools/windows
-RUN \
+    # Install crackmapexec
+	python3 -m pip install pipx && \
+	pipx ensurepath && \
+	pipx install crackmapexec && \
     # Download powersploit
 	git clone --depth 1 https://github.com/PowerShellMafia/PowerSploit.git && \
     # Download Mimikatz
 	wget --quiet https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20200816/mimikatz_trunk.zip -O mimikatz.zip && \
 	unzip mimikatz.zip -d mimikatz && \
-	rm mimikatz.zip
+	rm mimikatz.zip && \
+    # Install impacket
+	git clone https://github.com/SecureAuthCorp/impacket.git
+WORKDIR /tools/windows/impacket
+RUN pip install .
 
 # SIMLINKS
 RUN \
 	ln -sf /tools/web/sqlmap/sqlmap.py /usr/local/bin/sqlmap && \
 	ln -sf /tools/web/XSStrike/xsstrike.py /usr/local/bin/xsstrike && \
+	ln -sf /tools/web/burpsuite /usr/local/bin/burpsuite && \
 	ln -sf /tools/cracking/john/run/john /usr/local/bin/john && \
 	ln -sf /tools/enum/smbmap/smbmap.py /usr/local/bin/smbmap && \
 	ln -sf /tools/enum/htbExplorer/htbExplorer /usr/local/bin/htbexplorer && \
 	ln -sf /tools/exploits/exploitdb/searchsploit /usr/local/bin/searchsploit && \
-	ln -sf /tools/enum/enum4linux/enum4linux.pl /usr/local/bin/enum4linux
+	ln -sf /tools/enum/enum4linux/enum4linux.pl /usr/local/bin/enum4linux && \
+	ln -sf /root/.local/bin/cme /usr/local/bin/cme
 
 # Change workdir
 ADD dotfiles/ /home/playerRed/
@@ -176,5 +177,6 @@ RUN \
 	chmod +x /home/playerRed/.start.sh
 	
 USER playerRed
-WORKDIR /home/playerRed
+ENV DISPLAY=:0
+WORKDIR /home/playerRed/htb
 ENTRYPOINT /bin/zsh /home/playerRed/.start.sh

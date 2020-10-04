@@ -19,6 +19,8 @@ bindkey '^[[1~' beginning-of-line
 bindkey '^[[4~' end-of-line
 bindkey '^[[3~' delete-char
 
+# Environment variables
+export DISPLAY=:0
 
 # Functions
 function xallPorts(){
