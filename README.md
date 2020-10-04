@@ -33,6 +33,7 @@ sudo docker run --rm -it -h Dock2rooT -v /tmp/.X11-unix:/tmp/.X11-unix -v /pc/pa
 **También se puede crear una función para lanzarlo más comodamente:**
 ```
 function hackTheBox(){
+        xhost +
         sudo sysctl -w net.ipv4.ip_forward=1 &>/dev/null && echo "Packet forwarding enabled"
         systemctl is-active --quiet docker || sudo systemctl start docker
         sudo docker run --rm -it -h Dock2rooT -v /tmp/.X11-unix:/tmp/.X11-unix -v /pc/path:/home/playerRed/htb --cap-add=NET_ADMIN --device=/dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 --name d2r dock2root /bin/zsh && \
