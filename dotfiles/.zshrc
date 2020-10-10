@@ -1,3 +1,6 @@
+# Para la correcta visualización de burpsuite
+export _JAVA_AWT_WM_NONREPARENTING=1
+
 # Enable colors and change prompt
 autoload -U colors && colors
 PS1='%B%F{red}[%f%(?.%F{green}.%F{red})%?%f%F{red}][%f%F{yellow}%n%f%F{green}@%f%F{blue}%m%f %F{magenta}%~%f%F{red}]%f#%b'
