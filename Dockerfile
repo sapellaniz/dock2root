@@ -133,6 +133,10 @@ RUN \
 	chmod +x pspy* && \
     # HTBexplorer
 	git clone https://github.com/s4vitar/htbExplorer.git
+    # Download linenum
+        wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
+    # Download linpeas
+        wget https://raw.githubusercontent.com/carlospolop/privilege-escalation-awesome-scripts-suite/master/linPEAS/linpeas.sh
 
 # Exploits
 RUN \
@@ -175,7 +179,7 @@ ADD dotfiles/ /home/playerRed/
 RUN \
 	chown -R playerRed:playerRed /home/playerRed && \
 	chmod +x /home/playerRed/.start.sh
-	
+
 USER playerRed
 ENV DISPLAY=:0
 WORKDIR /home/playerRed/htb
