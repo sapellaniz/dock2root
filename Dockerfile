@@ -134,7 +134,7 @@ RUN \
     # HTBexplorer
 	git clone https://github.com/s4vitar/htbExplorer.git
     # Download linenum
-        wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
+        wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh && \
     # Download linpeas
         wget https://raw.githubusercontent.com/carlospolop/privilege-escalation-awesome-scripts-suite/master/linPEAS/linpeas.sh
 
