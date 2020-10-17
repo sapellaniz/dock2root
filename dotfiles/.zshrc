@@ -75,5 +75,9 @@ alias rm='rm -v'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
+alias l='ls -lah'
+alias ll='ls -l'
+alias la='ls -a'
+
 # Load zsh-syntax-highlighting; should be last.
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
