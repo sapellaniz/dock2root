@@ -85,10 +85,15 @@ Estas son unas recomendaciones para ponerselo más dificil a "los malos":
 5. nikto
 6. sqlmap
 7. whatweb
-8. XSStrike
+8. wpscan
+9. XSStrike
 
 ### Cracking
-1. john the ripper
+1. cewl
+2. crunch
+3. hydra
+4. hashcat
+5. john the ripper
 
 ### Wordlists
 1. Rockyou
@@ -100,4 +105,4 @@ Estas son unas recomendaciones para ponerselo más dificil a "los malos":
 3. mimikatz
 
 ## 7- TODO
-- Cambiar orden de instlación de herramientas y corregir comentarios en Dockerfile.
+- Cambiar orden de instalación de herramientas y corregir comentarios en Dockerfile.
