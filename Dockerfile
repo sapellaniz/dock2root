@@ -132,7 +132,7 @@ RUN \
 	wget -q https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64 && \
 	chmod +x pspy* && \
     # HTBexplorer
-	git clone https://github.com/s4vitar/htbExplorer.git
+	git clone https://github.com/s4vitar/htbExplorer.git && \
     # Download linenum
         wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh && \
     # Download linpeas
