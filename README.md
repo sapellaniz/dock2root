@@ -71,17 +71,28 @@ Estas son unas recomendaciones para ponerselo más dificil a "los malos":
 - Crear una partición dedicada para HTB o CTFs, con las opciones nosuid,nodev,noexec en fstab.
 
 ## 6- Tools
+### Cracking
+1. cewl
+2. crunch
+3. hydra
+4. hashcat
+5. john the ripper
+
 ### Enum
 1. htbenum
 2. htbexplorer
 3. nmap
 4. linux/enum4linux
 5. linux/linenum
-5. linux/linPEAS
-7. windows/crackmapexec
-7. windows/powersploit
-7. windows/smbmap
-7. windows/winPEAS
+6. linux/linPEAS
+7. pspy
+8. windows/crackmapexec
+9. windows/powersploit
+10. windows/smbmap
+11. windows/winPEAS
+
+### Exploits
+1. searchsploit
 
 ### Web
 1. Burp suite
@@ -94,21 +105,15 @@ Estas son unas recomendaciones para ponerselo más dificil a "los malos":
 8. wpscan
 9. XSStrike
 
-### Cracking
-1. cewl
-2. crunch
-3. hydra
-4. hashcat
-5. john the ripper
+### Windows
+1. evil-winrm
+2. impacket
+3. mimikatz
+4. powersploit
 
 ### Wordlists
 1. Rockyou
 2. SecLists
 
-### Windows
-1. evil-winrm
-2. impacket
-3. mimikatz
-
 ## 7- TODO
-- Cambiar orden de instalación de herramientas y corregir comentarios en Dockerfile.
+- Incluir categorias de stego y reversing.
