@@ -44,9 +44,6 @@ bindkey '^[[1~' beginning-of-line
 bindkey '^[[4~' end-of-line
 bindkey '^[[3~' delete-char
 
-# Environment variables
-export DISPLAY=:0
-
 # Functions
 function xallPorts(){
     nmap -Pn -p- --open -T5 -v -n $1 -oG allPorts

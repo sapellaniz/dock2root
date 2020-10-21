@@ -14,7 +14,7 @@ Todas las herramientas necesarias para poder jugar... y mas! Enmarcadas en una i
 ### Usabilidad:
 Al lanzar el contenedor se crea una sesión de tmux en la que podrás crear paneles y ventanas para poder realizar varias tareas a la vez, los atajos del teclado se pueden ver en "\~/.tmux.conf", también hay tres funciones en "~/.zshrc" para automatizar un el escaneo de puertos inicial y poder ir más rápido.
 
-## 2- Instalar
+## 2- Instalar/actualizar
 **Desde github**
 ```
 git clone https://github.com/sapellaniz/dock2root.git
@@ -44,6 +44,12 @@ function hackTheBox(){
 ## 4- FAQs
 ### Aplicaciones con GUI (firefox, burpsuite, wireshark...):
 Si se lanza el contenedor con la opción "-v /tmp/.X11-unix:/tmp/.X11-unix" se pueden ejecutar aplicaciones con GUI instaladas en el contenedor.
+
+### "Error: cannot open display: :0"
+Para solucionar este error al abrir una aplicacion con GUI, basta con lanzar el contenedor con el siguiente argumento:
+```
+--env DISPLAY
+```
 
 ## 5- Seguridad
 La 5ª regla de HTB:
