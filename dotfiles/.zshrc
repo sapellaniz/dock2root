@@ -44,9 +44,6 @@ bindkey '^[[1~' beginning-of-line
 bindkey '^[[4~' end-of-line
 bindkey '^[[3~' delete-char
 
-# Environment variables
-export DISPLAY=:0
-
 # Functions
 function xallPorts(){
     nmap -Pn -p- --open -T5 -v -n $1 -oG allPorts
@@ -74,6 +71,10 @@ alias mv='mv -vi'
 alias rm='rm -v'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
+
+alias l='ls -lah'
+alias ll='ls -l'
+alias la='ls -a'
 
 # Load zsh-syntax-highlighting; should be last.
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null

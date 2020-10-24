@@ -14,7 +14,7 @@ Todas las herramientas necesarias para poder jugar... y mas! Enmarcadas en una i
 ### Usabilidad:
 Al lanzar el contenedor se crea una sesión de tmux en la que podrás crear paneles y ventanas para poder realizar varias tareas a la vez, los atajos del teclado se pueden ver en "\~/.tmux.conf", también hay tres funciones en "~/.zshrc" para automatizar un el escaneo de puertos inicial y poder ir más rápido.
 
-## 2- Instalar:
+## 2- Instalar/actualizar
 **Desde github**
 ```
 git clone https://github.com/sapellaniz/dock2root.git
@@ -26,7 +26,7 @@ sudo docker build -t dock2root .
 sudo docker pull santatecla/dock2root:tagname
 ```
 
-## 3- Lanzar:
+## 3- Lanzar
 ```
 sudo docker run --rm -it -h Dock2rooT -v /tmp/.X11-unix:/tmp/.X11-unix -v /pc/path:/container/path --cap-add=NET_ADMIN --device=/dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 --name d2r dock2root /bin/zsh
 ```
@@ -41,9 +41,15 @@ function hackTheBox(){
 }
 ```
 
-## 4- FAQs:
+## 4- FAQs
 ### Aplicaciones con GUI (firefox, burpsuite, wireshark...):
 Si se lanza el contenedor con la opción "-v /tmp/.X11-unix:/tmp/.X11-unix" se pueden ejecutar aplicaciones con GUI instaladas en el contenedor.
+
+### "Error: cannot open display: :0"
+Para solucionar este error al abrir una aplicacion con GUI, basta con lanzar el contenedor con el siguiente argumento:
+```
+--env DISPLAY
+```
 
 ## 5- Seguridad
 La 5ª regla de HTB:
@@ -63,3 +69,51 @@ Estas son unas recomendaciones para ponerselo más dificil a "los malos":
 - El reenvio de paquetes debe estar habilitado para poder jugar, es recomendable tenerlo desactivado por defecto y solamente activarlo para jugar.
 
 - Crear una partición dedicada para HTB o CTFs, con las opciones nosuid,nodev,noexec en fstab.
+
+## 6- Tools
+### Cracking
+1. cewl
+2. crunch
+3. hydra
+4. hashcat
+5. john the ripper
+
+### Enum
+1. htbenum
+2. htbexplorer
+3. nmap
+4. linux/enum4linux
+5. linux/linenum
+6. linux/linPEAS
+7. pspy
+8. windows/crackmapexec
+9. windows/powersploit
+10. windows/smbmap
+11. windows/winPEAS
+
+### Exploits
+1. searchsploit
+
+### Web
+1. Burp suite
+2. ffuf
+3. firefox
+4. gobuster
+5. nikto
+6. sqlmap
+7. whatweb
+8. wpscan
+9. XSStrike
+
+### Windows
+1. evil-winrm
+2. impacket
+3. mimikatz
+4. powersploit
+
+### Wordlists
+1. Rockyou
+2. SecLists
+
+## 7- TODO
+- Incluir categorias de stego y reversing.
